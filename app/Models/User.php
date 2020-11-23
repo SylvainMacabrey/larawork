@@ -66,10 +66,16 @@ class User extends Authenticatable
         return $this->belongsTo(Role::class);
     }
 
-    public function job()
+    public function jobs()
     {
         return $this->hasMany(Job::class);
     }
+
+    public function proposals()
+    {
+        return $this->hasMany(Proposal::class);
+    }
+
 
     public function likes()
     {

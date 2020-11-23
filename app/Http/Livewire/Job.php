@@ -12,6 +12,8 @@ class Job extends Component
     {
         if(auth()->check()) {
             auth()->user()->likes()->toggle($this->job->id);
+        } else {
+            $this->emit('flash', 'Merci de vous connecter', 'error');
         }
     }
 

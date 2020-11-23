@@ -29,6 +29,8 @@
                 </div>
             </header>
 
+            <livewire:flash />
+
             <!-- Page Content -->
             <main>
                 {{ $slot }}

@@ -19,6 +19,11 @@ class Job extends Model
         return $this->belongsTo(User::class);
     }
 
+    public function proposals()
+    {
+        return $this->hasMany(Proposal::class);
+    }
+
     public function likes()
     {
         return $this->belongsToMany(User ::class);

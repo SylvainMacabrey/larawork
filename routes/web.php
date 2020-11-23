@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\JobController;
+use App\Http\Controllers\ProposalController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,12 +16,12 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view('dashboard');
+})->name('dashboard');
 
 Route::get('/jobs', [JobController::class, 'index'])->name('job.index');
 Route::get('job/{job}', [JobController::class, 'show'])->name('job.show');
 
-Route::middleware(['auth:sanctum', 'verified'])->get('/dashboard', function () {
-    return view('dashboard');
-})->name('dashboard');
+Route::group(['middleware' => ['auth:sanctum', 'verified', 'proposal']], function () {
+    Route::post('/submit/{job}', [ProposalController::class, 'store'])->name('proposal.store');
+});
