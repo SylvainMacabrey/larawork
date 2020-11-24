@@ -82,4 +82,11 @@ class User extends Authenticatable
         return $this->belongsToMany(Job::class);
     }
 
+    public function conversations()
+    {
+        return Conversation::where(function ($query) {
+            return $query->where('to_id', $this->id)->orWhere('from_id', $this->id);
+        })->get();
+    }
+
 }

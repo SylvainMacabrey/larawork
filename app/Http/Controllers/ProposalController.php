@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Conversation;
 use App\Models\CoverLetter;
 use App\Models\Job;
+use App\Models\Message;
 use App\Models\Proposal;
 use Illuminate\Http\Request;
 
@@ -21,6 +23,26 @@ class ProposalController extends Controller
             'content' => $request->content
         ]);
         return redirect()->route('job.index');
+    }
+
+    public function confirm(Request $request)
+    {
+        $proposal = Proposal::findOrFail($request->proposal);
+        $proposal->fill(['validated' => 1]);
+        if($proposal->isDirty()) {
+            $proposal->save();
+            $conversation = Conversation::create([
+                'from_id' => auth()->user()->id,
+                'to_id' => $proposal->user->id,
+                'job_id' => $proposal->job_id
+            ]);
+            Message::create([
+                'user_id' => auth()->user()->id,
+                'conversation_id' => $conversation->id,
+                'content' => "Bonjour, j'ai validé votre offre"
+            ]);
+            return redirect()->route('job.index');
+        }
     }
 
 }
