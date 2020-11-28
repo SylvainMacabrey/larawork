@@ -3,10 +3,13 @@
 namespace App\Http\Livewire;
 
 use App\Models\Message;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Livewire\Component;
 
 class Conversation extends Component
 {
+    use AuthorizesRequests;
+
     public $conversation;
     public $message = '';
     protected $listeners = ['sent' => '$refresh'];
@@ -25,6 +28,7 @@ class Conversation extends Component
     public function mount($conversation)
     {
         $this->conversation = $conversation;
+        $this->authorize('view', $conversation);
     }
 
     public function render()

@@ -28,6 +28,9 @@ class ProposalController extends Controller
     public function confirm(Request $request)
     {
         $proposal = Proposal::findOrFail($request->proposal);
+        if($proposal->job->user->id !== auth()->user()->id) {
+            dd("nope");
+        }
         $proposal->fill(['validated' => 1]);
         if($proposal->isDirty()) {
             $proposal->save();
